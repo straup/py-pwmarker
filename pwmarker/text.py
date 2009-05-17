@@ -1,3 +1,5 @@
+# THIS SHOULD BE CONSIDERED DEPRECATED.
+
 import cairo
 import re
 
