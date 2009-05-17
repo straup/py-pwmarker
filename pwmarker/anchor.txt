@@ -1,0 +1,124 @@
+__init__.py
+
+        if anchor == 'top' :
+            self.canvas_w = self.offset + self.border_w + self.img_w + (self.padding * 2)
+            self.canvas_h = self.offset + self.img_h + (self.padding * 2) + self.anchor_h
+                            
+            self.offset_x = self.offset + self.padding
+            self.offset_y = self.offset + self.padding + self.anchor_h
+
+        elif anchor == 'bottom' :
+            
+        elif anchor == 'left' :
+            self.canvas_w = None
+            self.canvas_h = None
+
+            self.offset_x = None
+            self.offset_y = None
+            
+        elif anchor == 'right' :
+            self.canvas_w = None
+            self.canvas_h = None
+
+            self.offset_x = None
+            self.offset_y = None
+
+        else :
+            pass
+
+pwcairo.py
+
+        if anchor == 'bottom' :
+            return self.surface
+        
+        elif anchor == 'left' :
+            return self.surface
+
+        else :
+
+            if anchor == 'right' :
+                matrix = cairo.Matrix (xx = -1, x0 = self.canvas_w)
+            else :
+                matrix = cairo.Matrix (yy = -1, y0 = self.canvas_h)
+            
+            data = array.array ("c", self.surface.get_data())
+            mode = cairo.FORMAT_ARGB32
+            
+            tmp = cairo.ImageSurface.create_for_data (data, mode,
+                                                      self.canvas_w, self.canvas_h)
+            
+            surf = cairo.ImageSurface (mode, self.canvas_w, self.canvas_h)
+            cr = cairo.Context(surf)
+
+            cr.transform(matrix)
+            cr.set_source_surface(tmp)
+            cr.paint ()
+
+            return surf
+
+        if anchor == 'top' or anchor == 'bottom' :
+            return self.__c_draw_vertical()
+        else :
+            return self.__c_draw_horizontal()
+
+    #
+        
+    def __draw_c_horizontal(self) :
+    
+        cr = cairo.Context(self.surface)
+    
+        x = self.offset + self.anchor_h + self.padding
+        y = self.offset + 0
+        cx = self.offset + self.anchor_h + self.padding + self.img_w
+        cy = self.offset + self.padding
+
+        cr.move_to(x, y)
+        cr.arc(cx, cy, self.corner_r, -math.pi/2, 0)
+
+        # top right arc
+    
+        x = self.offset + self.anchor_h + self.img_w + (self.padding * 2)
+        y = self.offset + self.img_h + self.padding 
+        cx = self.offset + self.anchor_h + self.img_w + self.padding
+        cy = self.offset + self.img_h + self.padding
+
+        cr.line_to(x, y)
+        cr.arc (cx, cy, self.corner_r, 0, math.pi/2)
+
+        # bottom right arc
+
+        x = self.offset + self.anchor_h + self.padding
+        y = self.offset + self.img_h + (self.padding * 2)
+        cx = self.offset + self.anchor_h + self.padding
+        cy = self.offset + self.img_h + self.padding
+        
+        cr.line_to(x, y)
+        cr.arc (cx, cy, self.corner_r, math.pi/2, math.pi)
+    
+        # cone
+    
+        x = self.offset + self.anchor_h
+        y = self.offset + int(self.canvas_h * .35) + int(self.anchor_w / 2)
+        cr.line_to(x, y)
+
+        x = self.offset + 0
+        y = self.offset + int(self.canvas_h * .35)
+        cr.line_to(x, y)
+
+        x = self.offset + self.anchor_h
+        y = self.offset + int(self.canvas_h * .35) - int(self.anchor_w / 2)
+        cr.line_to(x, y)
+        
+        # top left arc
+        
+        x = self.offset + self.anchor_h
+        y = self.offset + self.padding
+        cx = self.offset + self.anchor_h + self.padding
+        cy = self.offset + self.padding
+
+        cr.line_to(x, y)
+        cr.arc (cx, cy, self.corner_r, math.pi, -math.pi/2)
+        
+        #
+
+        return cr

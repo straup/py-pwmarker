@@ -1,0 +1,149 @@
+NAME
+    pwmarker - generate pinwin-style markers with perspective shadows.
+
+SYNOPSIS
+     width = 240
+     height = 180
+     anchor = 50
+                
+     m = PinwinMarker(width, height, anchor)
+     m.draw()
+ 
+     m.save("/path/to/marker.png")
+
+DESCRIPTION
+    pwmarker is a class for generating pinwin-style markers with either a
+    stylized ("cartoon") or a true perspective shadow. Pinwin markers are
+    designed to act as containers for other images, or text, but adding
+    either is outside the scope of this package and left up to individual
+    developers.
+
+    Markers are returned as PNG images with a transparent background and
+    semi-transparent shadows.
+
+    By default pwmarker tries to use the Python Cairo bindings as a
+    rendering engine but if they are not installed then it will use the
+    standard Python Image Library (PIL). In either case PIL is required.
+
+PACKAGE METHODS
+  PinwinMarker(width, height, anchor=0)
+    *width* and *height* are the dimensions of the source image that you are
+    creating a pinwin for. Additional padding is added programatically
+    relative to the size of the image no more or no less than 25 and 15
+    pixels respectively.
+
+    *anchor* is the height of pinwin's anchor. If no value is defined then
+    it will be calculated as one-third of the source image's height but no
+    less than 20 pixels.
+
+    Returns a *PinwinMarker* object!
+
+OBJECT METHODS
+  obj.draw()
+    This method renders the multiple layers for the pinwin, each with its
+    own transparent background :
+
+    * pinwin
+        Just the pinwin.
+
+    * shadow
+        Just the shadow.
+
+    * all (or combined)
+        The pinwin marker overlayed on the shadow layer.
+
+    Returns null.
+
+  obj.save(path, layer='all')
+    Write a specific marker layer to a file. Valid layers are :
+
+    * pinwin
+        Just the pinwin.
+
+    * shadow
+        Just the shadow.
+
+    * all (default)
+        The pinwin marker overlayed on the shadow layer.
+
+    Returns true or false.
+
+MARKER PROPERTIES YOU SHOULD CARE ABOUT
+    Once you've created a marker you will probably want to place an image on
+    the pinwin's "canvas" and place the marker itself on another image.
+
+    The following object properties will be set after you've called the
+    *draw* method :
+
+    * padding
+        The number of pixels, on both the x and y axis, offset from (0, 0)
+        to center an image on the pinwin "canvas".
+
+    B *<pt_x>
+        The number of pixels, on the x axis, offset from (0, 0) representing
+        the bottom (or point) of the pinwin's anchor.
+
+    B *<pt_y>
+        The number of pixels, on the y axis, offset from (0, 0) representing
+        the bottom (or point) of the pinwin's anchor.
+
+MARKER PROPERTIES YOU MAY CARE ABOUT
+    The following object properties can be tweaked before calling the *draw*
+    method.
+
+    * border
+        Int.
+
+        Set the border width for the pinwin. (This only works if you have
+        the Python Cairo bindings installed.)
+
+        Default is *2*
+
+    * cartoon_shadow
+        Boolean.
+
+        Toggle between stylized "cartoon" shadows and shadows generated
+        using a proper 45 degree perpective transformation.
+
+        Default is *True*
+
+    * blurry_shadows
+        Boolean.
+
+        Toggle whether shadows should be blurred and softened.
+
+        Default is *True*
+
+    * add_dot
+        Boolean.
+
+        Toggle whether to include a (pink) visual marker at the base of a
+        pinwin's anchor.
+
+        Default is *True*
+
+VERSION
+    1.0
+
+DATE
+    $Date: 2008/11/30 03:44:04 $
+
+AUTHOR
+    Aaron Straup Cope
+
+EXAMPLE
+    http://flickr.com/photos/straup/2599411504/
+
+SEE ALSO
+    <http://www.pythonware.com/products/pil/>
+
+    <http://www.cairographics.org/pycairo/>
+
+    <http://modestmaps.com/examples-python-ws/>
+
+COPYRIGHT
+    Copyright (c) 2008 Aaron Straup Cope. All Rights Reserved.
+
+LICENSE
+    http://www.modestmaps.com/license.txt
+
