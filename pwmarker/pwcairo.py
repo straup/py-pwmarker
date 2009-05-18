@@ -2,7 +2,7 @@ __package__    = "pwmarker/pwcairo.py"
 __version__    = "1.0.1"
 __author__     = "Aaron Straup Cope"
 __url__        = "http://www.aaronland.info/python/pwmarker"
-__date__       = "$Date: 2008/11/30 03:44:04 $"
+__date__       = "$Date: 2009/05/17 17:02:19 $"
 __copyright__  = "Copyright (c) 2008 Aaron Straup Cope. All rights reserved."
 __license__    = "http://www.modestmaps.com/license.txt"
 
@@ -12,6 +12,7 @@ import random
 import cairo
 import PIL.Image
 import PIL.ImageDraw
+import pwtext
 
 # http://www.cairographics.org/pycairo/tutorial/
 # http://www.tortall.net/mu/wiki/CairoTutorial
@@ -143,8 +144,23 @@ class CairoMarker :
         if dot_ctx == 'pinwin' and self.add_cropmarks :
             self.crop_marks()
 
-        #
+        # markers with text! - this is not final...
+        
+        text = None
+        
+        if dot_ctx == 'pinwin' and text :
+        
+            width = self.img_w
+            height = self.img_h
+            margin = 20
+            
+            pwtext.draw_text_block(text, width, height,
+                                   margin=margin, no_background=1,
+                                   cairo_surface=self.surface)
+            
 
+        #
+        
         return self.surface
 
     #
