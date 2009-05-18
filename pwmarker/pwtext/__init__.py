@@ -99,8 +99,16 @@ def draw_text_block_to_PNG (text, path, width, height, **kwargs) :
 
 def draw_text_block (text, width, height, **kwargs) :
 
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
-        ctx = cairo.Context(surface)
+        surface = None
+        ctx = None
+        
+        if kwargs.has_key('cairo_surface') :
+                surface = kwargs['cairo_surface']
+                ctx = cairo.Context(surface)
+
+        else :
+                surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)                
+                ctx = cairo.Context(surface)
 
         #
 
@@ -196,13 +204,14 @@ def draw_text_block (text, width, height, **kwargs) :
         width = int(width)
         height = int(height)
     
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
-        ctx = cairo.Context(surface)
+        # surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+        # ctx = cairo.Context(surface)
 
-        ctx.move_to(0, 0)
-        ctx.rectangle(0, 0, width, height)
-        ctx.set_source_rgb(255, 255, 255)
-        ctx.fill()
+        if not kwargs.has_key('no_background') :
+                ctx.move_to(0, 0)
+                ctx.rectangle(0, 0, width, height)
+                ctx.set_source_rgb(255, 255, 255)
+                ctx.fill()
         
         ctx.set_source_rgb(0, 0, 0)
     
